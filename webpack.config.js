@@ -19,8 +19,8 @@ let plugins = [
 let config = {
   devtool: prod ? false : 'source-map',
   entry: {
-    "index.js":    "./src/holder.js",
-    "holder.css":  "./src/holder.scss"
+    "index.js":     "./src/arise.js",
+    "arise.css":    "./src/arise.scss"
   },
   output: {
     path: path.resolve(__dirname, 'lib'),

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export class HolderComponent extends React.Component {
+export class Arise extends React.Component {
 
   get passPropsToState() { return ['show']; }
 

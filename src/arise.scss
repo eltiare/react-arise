@@ -6,7 +6,7 @@
   bottom: 0;
 }
 
-.Holder-modal-container {
+.Arise-modal-container {
 
   position: absolute;
   display: flex;
@@ -18,14 +18,14 @@
 
   @include full-screen();
 
-  .Holder-modal-overlay {
+  .Arise-modal-overlay {
     @include full-screen();
     position: fixed;
     background: rgba(0,0,0,0.5);
     z-index: 10000;
   }
 
-  .Holder-modal-content {
+  .Arise-modal-content {
     position: fixed;
     min-width: 1px;
     max-width: 90%;
@@ -41,7 +41,7 @@
 
 }
 
-.Holder-popup {
+.Arise-popup {
   position: absolute;
   visibility: hidden;
   opacity: 0;
@@ -49,15 +49,15 @@
   z-index: -1;
 }
 
-.Holder-popup, .Holder-modal-container {
+.Arise-popup, .Arise-modal-container {
 
-  &.Holder-show  {
+  &.Arise-show  {
     visibility: visible;
     z-index: 0;
     opacity: 1;
   }
 
-  &.Holder-hide-transition {
+  &.Arise-hide-transition {
     visibility: visible;
     z-index: 0;
     opacity: 0;
