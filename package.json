@@ -1,7 +1,7 @@
 {
-  "name": "react-holder",
+  "name": "react-arise",
   "version": "0.0.1",
-  "description": "Minimal size popup/modal library built on React",
+  "description": "Minimal sized popup/modal library built on React",
   "main": "./lib/index.js",
   "license": "MIT",
   "directories": {
