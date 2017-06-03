@@ -6,6 +6,8 @@
   bottom: 0;
 }
 
+body.noscroll { overflow: hidden; }
+
 .Arise-modal-container {
 
   position: absolute;
@@ -29,13 +31,6 @@
     position: fixed;
     min-width: 1px;
     max-width: 90%;
-    /*max-width: 900px;
-    text-align: center;
-    img {
-      box-sizing: border-box;
-      max-width: 99%;
-      max-height: 99%;
-    }*/
     z-index: 10001;
   }
 
@@ -53,13 +48,13 @@
 
   &.Arise-show  {
     visibility: visible;
-    z-index: 0;
+    z-index: 10000;
     opacity: 1;
   }
 
   &.Arise-hide-transition {
     visibility: visible;
-    z-index: 0;
+    z-index: 10000;
     opacity: 0;
   }
 

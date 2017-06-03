@@ -10,7 +10,7 @@ export default class Arise extends React.Component {
       div = document.createElement('div');
       document.body.appendChild(div);
     }
-    return ReactDOM.render( <Arise { ... props } universalPositioning={ true } />, div );
+    return ReactDOM.render( <Arise force={ true } { ... props } universalPositioning={ true } />, div );
   }
 
   get passPropsToState() { return ['show']; }
@@ -22,12 +22,16 @@ export default class Arise extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState( this._stateFromProps(newProps, this.props) );
+    this.setState( this._stateFromProps(newProps, newProps.force ? {} : this.props) );
   }
 
   componentDidMount() {
     this._handleTransitions();
     this._reposition();
+  }
+
+  componentWillUnmount() {
+    document.querySelector('body').classList.remove(this.props.noscrollClass || 'noscroll');
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -47,7 +51,6 @@ export default class Arise extends React.Component {
     const modalClasses = this.props.modalClasses || {};
     const contentOpts = html ?
       { dangerouslySetInnerHTML : { __html: html } } : { children };
-    console.info(this.state, this.props);
     if (modal) {
       return <div className={ modalClasses.container || 'Arise-modal-container' } ref="container">
         <div ref="overlay" className={ modalClasses.overlay || 'Arise-modal-overlay' }
@@ -61,13 +64,17 @@ export default class Arise extends React.Component {
     }
   }
 
+  // TODO: clean up variables names to be more readable
   _handleTransitions(prevState = {}) {
     if (prevState.show == this.state.show) return;
     let { container } = this.refs;
     let { showClass, hideTransitionClass } = this.props;
     let sc = showClass || 'Arise-show',
       htc = hideTransitionClass || 'Arise-hide-transition',
-      cl = container.classList;
+      cl = container.classList,
+      bcl = document.querySelector('body').classList,
+      ns = this.props.noscrollClass || 'noscroll';
+    this.state.show ? bcl.add(ns) : bcl.remove(ns);
     const listener = (e) => {
       container.removeEventListener('transitionend', listener);
       cl.remove(htc);

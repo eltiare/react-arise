@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Supercal Test</title>
+  <title>Arise Test</title>
   <link rel="stylesheet" href="lib/arise.css">
 </head>
+
+
+<a href="#" id="test">Reopen</a>
 
 <body>
   <script src="lib/testing.js"></script>
   <script>
-    arise({
-      html: "<img src='./bubbles.jpg' alt='' />",
-      show: true,
-      modal: true
+
+    function show() {
+      arise({
+        html: "<img src='./bubbles.jpg' alt='' />",
+        show: true,
+        modal: true
+      });
+    }
+
+    show();
+
+    document.getElementById('test').addEventListener('click', function(e) {
+      e.preventDefault();
+      show();
     });
+
   </script>
 </body>
 </html>
