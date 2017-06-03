@@ -1,7 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export class Arise extends React.Component {
+let div;
+
+export default class Arise extends React.Component {
+
+  static universal(props) {
+    if (!div) {
+      div = document.createElement('div');
+      document.body.appendChild(div);
+    }
+    return ReactDOM.render( <Arise { ... props } universalPositioning={ true } />, div );
+  }
 
   get passPropsToState() { return ['show']; }
 
@@ -37,15 +47,16 @@ export class Arise extends React.Component {
     const modalClasses = this.props.modalClasses || {};
     const contentOpts = html ?
       { dangerouslySetInnerHTML : { __html: html } } : { children };
+    console.info(this.state, this.props);
     if (modal) {
-      return <div className={ modalClasses.container || 'Holder-modal-container' } ref="container">
-        <div ref="overlay" className={ modalClasses.overlay || 'Holder-modal-overlay' }
+      return <div className={ modalClasses.container || 'Arise-modal-container' } ref="container">
+        <div ref="overlay" className={ modalClasses.overlay || 'Arise-modal-overlay' }
           onClick={ this.close } />
-        <div className={ modalClasses.content || 'Holder-modal-content '} ref="content"
+        <div className={ modalClasses.content || 'Arise-modal-content '} ref="content"
           { ... contentOpts } />
       </div>;
     } else {
-      return <div className={ popupClass || 'Holder-popup' } ref="container"
+      return <div className={ popupClass || 'Arise-popup' } ref="container"
         { ... contentOpts } />;
     }
   }
@@ -54,8 +65,8 @@ export class Arise extends React.Component {
     if (prevState.show == this.state.show) return;
     let { container } = this.refs;
     let { showClass, hideTransitionClass } = this.props;
-    let sc = showClass || 'Holder-show',
-      htc = hideTransitionClass || 'Holder-hide-transition',
+    let sc = showClass || 'Arise-show',
+      htc = hideTransitionClass || 'Arise-hide-transition',
       cl = container.classList;
     const listener = (e) => {
       container.removeEventListener('transitionend', listener);
@@ -102,16 +113,7 @@ export class Arise extends React.Component {
     for (let i=0; p = vars[i]; i++) {
       if (newProps[p] !== oldProps[p]) newState[p] = newProps[p];
     }
-    this.setState(newState);
+    return newState;
   }
 
-}
-
-let div;
-export default function holder(props) {
-  if (!div) {
-    div = document.createElement('div');
-    document.body.appendChild(div);
-  }
-  return ReactDOM.render( <HolderComponent { ... props } universalPositioning={ true } />, div );
 }

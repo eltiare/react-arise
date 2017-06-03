@@ -51,8 +51,7 @@ let config = {
                 "root": ["."],
                 "alias": {
                   "react": "preact-compat",
-                  "react-dom": "preact-compat",
-                  "create-react-class": "preact-compat/lib/create-react-class"
+                  "react-dom": "preact-compat"
                 }
               }
             ]
@@ -70,5 +69,16 @@ let config = {
     ]
   }
 };
+
+if (prod) {
+  Object.assign(config.output, {
+    library: 'Arise',
+    libraryTarget: 'umd'
+  });
+} else {
+  Object.assign(config.entry, {
+    "testing.js":  "./src/testing.js"
+  });
+}
 
 module.exports = config;
