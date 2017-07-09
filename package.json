@@ -1,9 +1,10 @@
 {
   "name": "react-arise",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Minimal sized popup/modal library built on React",
   "main": "./lib/index.js",
   "license": "MIT",
+  "homepage": "https://github.com/eltiare/react-arise",
   "directories": {
     "lib": "./lib"
   },
