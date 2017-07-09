@@ -1,9 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 let div;
 
 export default class Arise extends React.Component {
+
+  static propTypes = {
+    force: PropTypes.bool,
+    show: PropTypes.bool.isRequired,
+    html: PropTypes.string,
+    children: PropTypes.node,
+    modal: PropTypes.bool,
+    modalClasses: PropTypes.object,
+    popupClass: PropTypes.string,
+    closeOnClick: PropTypes.bool,
+    anchorElement: PropTypes.node,
+    popupPadding: PropTypes.string,
+    universalPositioning: PropTypes.boolean
+  };
+
+  static defaultProps = {
+    closeOnClick: true
+  };
 
   static universal(props) {
     if (!div) {
@@ -47,14 +66,14 @@ export default class Arise extends React.Component {
 
   render() {
     const { show } = this.state;
-    const { html, children, modal, popupClass } = this.props;
+    const { html, children, modal, popupClass, closeOnClick } = this.props;
     const modalClasses = this.props.modalClasses || {};
     const contentOpts = html ?
       { dangerouslySetInnerHTML : { __html: html } } : { children };
     if (modal) {
       return <div className={ modalClasses.container || 'Arise-modal-container' } ref="container">
         <div ref="overlay" className={ modalClasses.overlay || 'Arise-modal-overlay' }
-          onClick={ this.close } />
+          onClick={ closeOnClick ? this.close : null } />
         <div className={ modalClasses.content || 'Arise-modal-content '} ref="content"
           { ... contentOpts } />
       </div>;
