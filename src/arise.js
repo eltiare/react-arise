@@ -17,7 +17,8 @@ export default class Arise extends React.Component {
     closeOnClick: PropTypes.bool,
     anchorElement: PropTypes.node,
     popupPadding: PropTypes.string,
-    universalPositioning: PropTypes.boolean
+    universalPositioning: PropTypes.bool,
+    onClose: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -32,16 +33,14 @@ export default class Arise extends React.Component {
     return ReactDOM.render( <Arise force={ true } { ... props } universalPositioning={ true } />, div );
   }
 
-  get passPropsToState() { return ['show']; }
-
   constructor(props) {
     super(props);
-    this._bindFunctions('open', 'close', '_reposition');
-    this.state = this._stateFromProps(props);
+    this._bindFunctions('_reposition');
+    this.state = { transitioning: false };
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState( this._stateFromProps(newProps, newProps.force ? {} : this.props) );
+    this.setState({ transitioning: true });
   }
 
   componentDidMount() {
@@ -54,27 +53,21 @@ export default class Arise extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this._handleTransitions(prevState);
+    this._handleTransitions(prevProps);
     this._reposition();
   }
 
-  open() { this.setState({ show: true }); }
-
-  close() { this.setState({ show: false }); }
-
-  toggle() { this.setState({ show: !this.state.show }); }
-
   render() {
-    const { show } = this.state;
-    const { html, children, modal, popupClass, closeOnClick } = this.props;
+    const { html, children, modal, popupClass, closeOnClick, universalPositioning, onClose } = this.props;
     const modalClasses = this.props.modalClasses || {};
     const contentOpts = html ?
       { dangerouslySetInnerHTML : { __html: html } } : { children };
+    const fixed = universalPositioning ? ' fixed' : '';
     if (modal) {
       return <div className={ modalClasses.container || 'Arise-modal-container' } ref="container">
-        <div ref="overlay" className={ modalClasses.overlay || 'Arise-modal-overlay' }
-          onClick={ closeOnClick ? this.close : null } />
-        <div className={ modalClasses.content || 'Arise-modal-content '} ref="content"
+        <div ref="overlay" className={ ( modalClasses.overlay || 'Arise-modal-overlay') + fixed }
+          onClick={ closeOnClick ? onClose : null } />
+        <div className={ ( modalClasses.content || 'Arise-modal-content' ) + fixed } ref="content"
           { ... contentOpts } />
       </div>;
     } else {
@@ -84,32 +77,34 @@ export default class Arise extends React.Component {
   }
 
   // TODO: clean up variables names to be more readable
-  _handleTransitions(prevState = {}) {
-    if (prevState.show == this.state.show) return;
+  _handleTransitions(prevProps = {}) {
+    let { showClass, hideTransitionClass, show } = this.props;
+    if (prevProps.show === show) return;
     let { container } = this.refs;
-    let { showClass, hideTransitionClass } = this.props;
     let sc = showClass || 'Arise-show',
       htc = hideTransitionClass || 'Arise-hide-transition',
       cl = container.classList,
       bcl = document.querySelector('body').classList,
       ns = this.props.noscrollClass || 'noscroll';
-    this.state.show ? bcl.add(ns) : bcl.remove(ns);
+    show ? bcl.add(ns) : bcl.remove(ns);
     const listener = (e) => {
       container.removeEventListener('transitionend', listener);
       cl.remove(htc);
     };
-    if (this.state.show) {
+    if (show) {
       cl.add(sc);
-    } else {
-      container.addEventListener('transitionend', listener);
+    } else  {
+      if (this.state.transitioning) {
+        container.addEventListener('transitionend', listener);
+        cl.add(htc);
+      }
       cl.remove(sc);
-      cl.add(htc);
     }
   }
 
   _reposition() {
-    let { modal, anchorElement, popupPadding, universalPositioning } = this.props;
-    let { show } = this.state;
+    let { modal, anchorElement, popupPadding, universalPositioning, show }
+      = this.props;
     let { container } = this.refs;
     if (modal || !show) return;
     let bottom, left;
@@ -130,16 +125,6 @@ export default class Arise extends React.Component {
     for (let i=0; arg = arguments[i]; i++) {
       this[arg] = this[arg].bind(this);
     }
-  }
-
-  _stateFromProps(newProps, oldProps) {
-    let vars = this.passPropsToState, p;
-    let newState = {};
-    oldProps = oldProps || {};
-    for (let i=0; p = vars[i]; i++) {
-      if (newProps[p] !== oldProps[p]) newState[p] = newProps[p];
-    }
-    return newState;
   }
 
 }

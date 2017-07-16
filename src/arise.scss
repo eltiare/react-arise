@@ -22,16 +22,18 @@ body.noscroll { overflow: hidden; }
 
   .Arise-modal-overlay {
     @include full-screen();
-    position: fixed;
     background: rgba(0,0,0,0.5);
     z-index: 10000;
   }
 
   .Arise-modal-content {
-    position: fixed;
     min-width: 1px;
     max-width: 90%;
     z-index: 10001;
+  }
+
+  .Arise-modal-overlay.fixed, .Arise-modal-content.fixed {
+    position: fixed;
   }
 
 }

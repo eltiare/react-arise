@@ -9,11 +9,11 @@ let prod = env === 'production';
 
 let plugins = [
   new ExtractTextPlugin("[name]"),
-  new BundleAnalyzerPlugin({
-    analyzerMode: 'server',
-    analyzerHost: '127.0.0.1',
-    analyzerPort: 8889
-  })
+  // new BundleAnalyzerPlugin({
+  //   analyzerMode: 'server',
+  //   analyzerHost: '127.0.0.1',
+  //   analyzerPort: 8889
+  // })
 ];
 
 let config = {

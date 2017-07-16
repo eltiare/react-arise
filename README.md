@@ -36,21 +36,20 @@ class ExampleComponent extends Component {
 
 **HTML:**
 ```
-<Arise show={ true } html="<p>Hey, I'm a modal!" modal={true}/>
+<Arise show={ true } html="<p>Hey, I'm a modal!</p>" modal={true} onClose={ closeFunc }/>
 ```
 
 **Child:**
 ```
   <input ref="inputElement">
-  <Arise show={ false } anchorElement={ this.refs.inputElement }>
+  <Arise show={ false } anchorElement={ this.refs.inputElement } onClose={ closeFunc }>
     <p>Put your text in here, bloke</p>
   </Arise>
 ```
 
 Attributes
 ----------
-* **force (boolean):** Always (re)show even if the state has changed and the props have not.
-* **show (boolean):** Change whether the popup/modal is shown. The component checks to see if this prop has changed. If it has, then update the state.
+* **show (boolean):** Change whether the popup/modal is shown.
 * **html (string):** Sets the innerHTML of the component's inner container. Use this instead of passing children if you like.
 * **modal (boolean):** Modal mode. Sets up an overlay and the content on top of that. See the notes section at the end for considerations.
 * **modalClasses (object):** Classes for modal mode (not popup). Can contain up to two keys: `container` and `content`, both with string values of what you want the class names to be.
@@ -58,6 +57,8 @@ Attributes
 * **closeOnClick (boolean):** In modal mode, decide whether clicking on the overlay closes the modal. Defaults to `true`.
 * **anchorElement (element):** In popup mode, the element that the popup is tied to. At the moment it is only shown below, but that is expected to change in the future.
 * **popupPadding (string):** In popup mode, the CSS value for the amount of space given between the `anchorElement` and the container. It has a default of `5px`.
+* **onClose (function):** Function that is called when closing. Be sure to change the state for whatever you're using to control the `show` property. 
+
 
 Notes
 -----
@@ -67,4 +68,4 @@ The popup/modal containers in the component do not break out of normal component
 License
 -------
 
-It's MIT, which means you can use it for whatever you want. The only stipulation is that you give proper credit that the end user can see in the delivered asset files which include the code. 
+It's MIT, which means you can use it for whatever you want. The only stipulation is that you give proper credit that the end user can see in the delivered asset files which include the code.
