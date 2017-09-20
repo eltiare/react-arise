@@ -4,28 +4,40 @@
   <meta charset="utf-8">
   <title>Arise Test</title>
   <link rel="stylesheet" href="lib/arise.css">
+  <style type="text/css">
+    body {
+      height: 2000px;
+    }
+  </style>
 </head>
 
-
-<a href="#" id="test">Reopen</a>
-
 <body>
+  <a href="#" id="test">Reopen</a>
+  <div style="height: 2000px"></div>
   <script src="lib/testing.js"></script>
   <script>
+    var _show = true;
 
-    function show() {
+    function close() {
+      _show = false;
+      render();
+    }
+
+    function render() {
       arise({
         html: "<img src='./bubbles.jpg' alt='' />",
-        show: true,
-        modal: true
+        show: _show,
+        modal: true,
+        onClose: close
       });
     }
 
-    show();
+    render();
 
     document.getElementById('test').addEventListener('click', function(e) {
       e.preventDefault();
-      show();
+      _show = true;
+      render();
     });
 
   </script>

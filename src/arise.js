@@ -64,14 +64,14 @@ export default class Arise extends React.Component {
       { dangerouslySetInnerHTML : { __html: html } } : { children };
     const fixed = universalPositioning ? ' fixed' : '';
     if (modal) {
-      return <div className={ modalClasses.container || 'Arise-modal-container' } ref="container">
+      return <div className={ (modalClasses.container || 'Arise-modal-container') + fixed } ref={ ele => this.container = ele }>
         <div ref="overlay" className={ ( modalClasses.overlay || 'Arise-modal-overlay') + fixed }
           onClick={ closeOnClick ? onClose : null } />
-        <div className={ ( modalClasses.content || 'Arise-modal-content' ) + fixed } ref="content"
+        <div className={ ( modalClasses.content || 'Arise-modal-content' ) + fixed } ref={ ele => this.content = ele }
           { ... contentOpts } />
       </div>;
     } else {
-      return <div className={ popupClass || 'Arise-popup' } ref="container"
+      return <div className={ popupClass || 'Arise-popup' } ref={ ele = this.container }
         { ... contentOpts } />;
     }
   }
@@ -80,7 +80,7 @@ export default class Arise extends React.Component {
   _handleTransitions(prevProps = {}) {
     let { showClass, hideTransitionClass, show } = this.props;
     if (prevProps.show === show) return;
-    let { container } = this.refs;
+    let { container } = this;
     let sc = showClass || 'Arise-show',
       htc = hideTransitionClass || 'Arise-hide-transition',
       cl = container.classList,
@@ -105,10 +105,10 @@ export default class Arise extends React.Component {
   _reposition() {
     let { modal, anchorElement, popupPadding, universalPositioning, show }
       = this.props;
-    let { container } = this.refs;
-    if (modal || !show) return;
+    let { container, content } = this;
     let bottom, left;
-    if (universalPositioning) {
+    if (modal || !show) return;
+    if (universalPositioning && anchorElement) {
       let bcr = anchorElement.getBoundingClientRect();
       bottom = bcr.bottom + ( window.scrollY || window.pageYOffset );
       left = bcr.left + ( window.scrollX || window.pageXOffset );

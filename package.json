@@ -1,6 +1,6 @@
 {
   "name": "react-arise",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Minimal sized popup/modal library built on React",
   "main": "./lib/index.js",
   "license": "MIT",

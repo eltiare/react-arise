@@ -10,13 +10,17 @@ body.noscroll { overflow: hidden; }
 
 .Arise-modal-container {
 
-  position: absolute;
   display: flex;
   visibility: hidden;
   align-items: center;
   justify-content: center;
   opacity: 0;
   transition: 250ms ease-in opacity;
+
+
+  &.fixed {
+    position: fixed;
+  }
 
   @include full-screen();
 
@@ -30,10 +34,6 @@ body.noscroll { overflow: hidden; }
     min-width: 1px;
     max-width: 90%;
     z-index: 10001;
-  }
-
-  .Arise-modal-overlay.fixed, .Arise-modal-content.fixed {
-    position: fixed;
   }
 
 }
